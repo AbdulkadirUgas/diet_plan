@@ -2,7 +2,7 @@ import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-nativ
 import React,{useState} from 'react'
 import { Icon } from "@rneui/themed";
 
-const Register = () => {
+const Register = ({navigation}) => {
     const [name,setName] = useState('')
     const [age,setAge] = useState('')
     const [height,setHeight] = useState('')
@@ -10,7 +10,9 @@ const Register = () => {
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
 
-    const register = () => {}
+    const register = () => {
+      navigation.navigate('Home')
+    }
   return (
     <View style={styles.container}>
       <Text style={{alignSelf:'center',marginTop:50,fontSize:20,fontWeight:'600',color:'#01882A'}}>Create your account</Text>
@@ -81,7 +83,7 @@ const Register = () => {
               returnKeyType='next'
               multiline={false}
               value={email}
-              keyboardType='numeric'
+              keyboardType='email-address'
               autoCorrect={false}
             />
         </View>
@@ -96,7 +98,7 @@ const Register = () => {
               multiline={false}
               value={password}
               secureTextEntry={true}
-              keyboardType='numeric'
+              keyboardType='default'
               autoCorrect={false}
             />
         </View>
@@ -115,7 +117,7 @@ const Register = () => {
           <Text style={styles.registerLabel}>already have an account?</Text>
           <TouchableOpacity
             onPress={() => {
-              
+              navigation.navigate('Login')
             }}
             activeOpacity={0.5}>
             <Text
@@ -158,6 +160,7 @@ const styles = StyleSheet.create({
     inputField:{
         flex:1,
         padding:0,
+        color:'black',
         // fontFamily: 'Roboto-Regular',
         fontSize: 16,
         marginLeft: 15,

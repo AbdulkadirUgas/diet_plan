@@ -2,11 +2,13 @@ import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'reac
 import React, { useState } from 'react'
 import { Icon } from "@rneui/themed";
 
-const Login = () => {
+const Login = ({navigation}) => {
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
 
-    const tryLogin =() => {}
+    const tryLogin =() => {
+      navigation.navigate('Home')
+    }
   return (
     <View style={styles.container}>
       <Text style={{alignSelf:'center',marginTop:50,fontSize:20,fontWeight:'600',color:'#01882A'}}>Login</Text>
@@ -59,7 +61,7 @@ const Login = () => {
           <Text style={styles.registerLabel}>Don’t have an account?</Text>
           <TouchableOpacity
             onPress={() => {
-              
+              navigation.navigate('Register')
             }}
             activeOpacity={0.5}>
             <Text
@@ -102,6 +104,7 @@ const styles = StyleSheet.create({
     inputField:{
         flex:1,
         padding:0,
+        color:'black',
         // fontFamily: 'Roboto-Regular',
         fontSize: 16,
         marginLeft: 15,

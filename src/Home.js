@@ -1,7 +1,7 @@
 import { StyleSheet, Text,Image, View, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-const Home = () => {
+const Home = ({navigation}) => {
   return (
     <View style={styles.container}>
 
@@ -17,7 +17,7 @@ const Home = () => {
       <Text style={{fontSize:20,fontWeight:'800',color:'#01882A'}}>What's your primary goal?</Text>
 
       <View style={{marginTop:30,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-        <TouchableOpacity activeOpacity={0.5} style={styles.card}>
+        <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('Plan')}} style={styles.card}>
             <View style={styles.card_icon}>
             <Image source={require('./assets/plan.png')} style={{height:60,width:60,resizeMode:'contain'}} />
             </View>
