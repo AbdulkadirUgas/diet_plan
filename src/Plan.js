@@ -1,9 +1,40 @@
 import { StyleSheet, Text,Image, View, TouchableOpacity, ScrollView } from 'react-native'
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import { Icon } from "@rneui/themed";
+import { serverIP } from '../Constants';
 
 const Plan = () => {
-    const foods = [1,23,1,3,1,2,1,3,1,3,4]
+    const [meals,setMeals] = useState([]);
+
+    useEffect(() => {
+        fetchData();
+      },[]);
+    const fetchData = () => {
+        var formData = new FormData();
+        formData.append('password', 'password');
+        let url = serverIP+'meal.php?meal=getAll'
+        fetch(url,{
+          method: 'post',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'multipart/form-data'
+          },
+          body: formData
+        })
+        .then(response => {
+          if(!response.ok){
+            throw new Error('could not fetch data')
+          }
+          return response.json()
+        })
+        .then(result =>{
+            console.log(result?.result)
+            setMeals(result?.result)
+        })
+        .catch(error =>{
+          console.log(error)
+        })
+    }
   return (
     <View style={styles.container}>
       
@@ -18,8 +49,8 @@ const Plan = () => {
       <View style={{backgroundColor:'#f5f5f5',flex:1,marginTop:20,paddingTop:30,borderTopRightRadius:40,borderTopLeftRadius:40,}}>
       <ScrollView>
       {
-        foods.map((_,index) => (
-            <FoodCard key={index}/>
+        meals.map((meal,index) => (
+            <FoodCard meal={meal} key={meal.mealID}/>
         ))
       }
       </ScrollView>
@@ -27,12 +58,12 @@ const Plan = () => {
     </View>
   )
 }
-const FoodCard = () => (
+const FoodCard = ({meal}) => (
     <TouchableOpacity activeOpacity={0.5} style={styles.food_card}>
-        <Image source={require('./assets/food.png')} style={{height:100,width:100,resizeMode:'contain'}} />
+        <Image source={{uri:serverIP+'/images/'+meal.image}} style={{height:100,width:100,resizeMode:'contain'}} />
         <View style={{}}>
-            <Text style={{fontSize:20,fontWeight:'600',color:'#01882A'}}>Breakfast</Text>
-            <Text style={{fontSize:14,marginTop:4,color:'#004'}}>Speacial Salad</Text>
+            <Text style={{fontSize:20,fontWeight:'600',color:'#01882A'}}>{meal.type}</Text>
+            <Text style={{fontSize:14,marginTop:4,color:'#004'}}>{meal.name}</Text>
         </View>
         <TouchableOpacity style={styles.bookmark_icon}>
         <Icon name='heart' type='ionicon' color='#fff' size={20}/>

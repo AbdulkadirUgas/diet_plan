@@ -1,6 +1,9 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Platform, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React,{useState} from 'react'
 import { Icon } from "@rneui/themed";
+
+import {validateRegisterDate} from '../Validate'
+import { serverIP } from '../Constants';
 
 const Register = ({navigation}) => {
     const [name,setName] = useState('')
@@ -9,9 +12,71 @@ const Register = ({navigation}) => {
     const [weight,setWeight] = useState('')
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
+    const [activeGender,setActiveGender] = useState('')
 
+    const [gender,setGender] = useState([
+      {
+        label: 'Male',
+        isSelected: false
+      },
+      {
+        label: 'Female',
+        isSelected: false
+      }
+    ])
+    const selectGender = (index) =>{
+      let newArr = [...gender];
+      newArr.forEach((gender) =>{
+        gender.isSelected = false
+      })
+      newArr[index].isSelected = true
+      setActiveGender(newArr[index].label)
+      setGender(newArr)
+  }
+  const displayMessage = (title,message) => {
+    Platform.OS === 'android' ?
+    ToastAndroid.show(message,ToastAndroid.LONG):
+    Alert.alert(title,message,'OK')
+  }
     const register = () => {
-      navigation.navigate('Home')
+      const {errors,valid} = validateRegisterDate(name,age,height,weight,activeGender,email,password)
+      if(!valid){
+        displayMessage("Error",errors.error)
+      }else{
+        var formData = new FormData();
+        formData.append('name', name);
+        formData.append('email', email);
+        formData.append('age', age);
+        formData.append('height', height);
+        formData.append('weight', weight);
+        formData.append('gender', activeGender);
+        formData.append('plan', '1');
+        formData.append('password', password);
+        let url = serverIP+'user.php?user=register'
+        fetch(url,{
+          method: 'post',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'multipart/form-data'
+          },
+          body: formData
+        })
+        .then(response => {
+          if(!response.ok){
+            throw new Error('could not fetch data')
+          }
+          return response.json()
+        })
+        .then(result =>{
+          console.log(result)
+          if(result?.status === 'success'){
+            navigation.replace('Home')
+          }else displayMessage("error ",result?.status)
+        })
+        .catch(error =>{
+          console.log(error)
+        })
+      }
     }
   return (
     <View style={styles.container}>
@@ -73,6 +138,23 @@ const Register = ({navigation}) => {
               autoCorrect={false}
             />
         </View>
+        
+        <View style={[styles.input_view,{marginTop:10}]}>
+        <Icon name='transgender-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
+        <View style={{marginLeft:15,flexDirection: 'row'}}>
+          {
+            gender.map((gender,index) =>(
+            <TouchableOpacity onPress={() => {selectGender(index)}} activeOpacity={0.5} key={index} style={{flexDirection: 'row',justifyContent:'center',alignItems:'center',marginRight:15}}>
+            <View style={styles.radioO}>
+              <View style={gender.isSelected ? styles.radioI : null}/>
+            </View>
+            <Text style={{marginLeft:4}}>{gender.label}</Text>
+            </TouchableOpacity>
+            ))
+          }
+        </View>
+        </View>
+
         <View style={[styles.input_view,{marginTop:10}]}>
         <Icon name='mail-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
         <TextInput
@@ -197,4 +279,19 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#666',
       },
+      radioO:{
+        height: 22,
+        width:22,
+        borderRadius:50,
+        borderColor: '#01882A',
+        borderWidth:2,
+        justifyContent: 'center',
+        alignItems:'center'
+      },
+      radioI:{
+        height: 14,
+        width:14,
+        borderRadius:50,
+        backgroundColor: '#01882A',
+      }
 })

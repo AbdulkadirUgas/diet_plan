@@ -1,13 +1,52 @@
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, Platform, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { Icon } from "@rneui/themed";
+import { serverIP } from '../Constants';
 
 const Login = ({navigation}) => {
     const [username,setUsername] = useState('')
     const [password,setPassword] = useState('')
 
-    const tryLogin =() => {
-      navigation.navigate('Home')
+    const displayMessage = (title,message) => {
+      Platform.OS === 'android' ?
+      ToastAndroid.show(message,ToastAndroid.LONG):
+      Alert.alert(title,message,'OK')
+    }
+
+    const tryLogin = async () => {
+      //check if username and password are empty
+      if(username === ''){
+        displayMessage("Login","Username can not be empty")
+      }
+      else if(password === ''){displayMessage("Login","Password can not be empty")}
+      else{
+        var formData = new FormData();
+        formData.append('email', username);
+        formData.append('password', password);
+        let url = serverIP+'user.php?user=login'
+        fetch(url,{
+          method: 'post',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'multipart/form-data'
+          },
+          body: formData
+        })
+        .then(response => {
+          if(!response.ok){
+            throw new Error('could not fetch data')
+          }
+          return response.json()
+        })
+        .then(result =>{
+          if(result?.status === 'logged'){
+            navigation.replace('Home')
+          }else displayMessage("error ",result?.status)
+        })
+        .catch(error =>{
+          console.log(error)
+        })
+      }
     }
   return (
     <View style={styles.container}>
