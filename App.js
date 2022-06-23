@@ -7,6 +7,7 @@ import Home from './src/Home';
 import Login from './src/Login';
 import Plan from './src/Plan';
 import Register from './src/Register';
+import BMI from './src/BMI';
 
 const Stack = createNativeStackNavigator();
 
@@ -21,8 +22,9 @@ const App = () => {
       screenOptions={{
             header:()=>(<View style={{height:0}}></View>)
         }}>
-        <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="Register" component={Register} />
+        {/* <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} /> */}
+        <Stack.Screen name="BMI" component={BMI} />
         <Stack.Screen name="Home" component={Home} />
         <Stack.Screen name="Plan" component={Plan} />
       </Stack.Navigator>

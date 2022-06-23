@@ -41,8 +41,8 @@ const Plan = () => {
       <View style={{flexDirection: 'row',justifyContent:'center',alignItems:'center',marginTop:40}}>
         <Image source={require('./assets/logo.png')} style={{height:100,width:100,resizeMode:'contain'}} />
         <View style={{marginLeft:10,justifyContent:'center',alignItems:'center'}}>
-            <Text style={{fontSize:50,fontWeight:'900',color:'#01882A'}}>EASY</Text>
-            <Text style={{fontSize:30,fontWeight:'200',color:'#FEC111'}}>DIET</Text>
+            <Text style={{fontSize:50,fontWeight:'900',color:'#01882A'}}>Meal</Text>
+            <Text style={{fontSize:30,fontWeight:'200',color:'#FEC111'}}>plan</Text>
         </View>
       </View>
 
