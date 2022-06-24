@@ -5,7 +5,7 @@ import { Icon } from "@rneui/themed";
 import {validateRegisterDate} from '../Validate'
 import { serverIP } from '../Constants';
 
-const Register = ({navigation}) => {
+const Profile = ({navigation}) => {
     const [name,setName] = useState('')
     const [age,setAge] = useState('')
     const [height,setHeight] = useState('')
@@ -13,6 +13,7 @@ const Register = ({navigation}) => {
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
     const [activeGender,setActiveGender] = useState('')
+    const [activePlan,setActivePlan] = useState('')
 
     const [gender,setGender] = useState([
       {
@@ -24,6 +25,17 @@ const Register = ({navigation}) => {
         isSelected: false
       }
     ])
+    const [plan,setPlan] = useState([
+        {
+          label: 'Gain',
+          isSelected: false
+        },
+        {
+          label: 'Loss',
+          isSelected: false
+        }
+      ])
+
     const selectGender = (index) =>{
       let newArr = [...gender];
       newArr.forEach((gender) =>{
@@ -32,13 +44,22 @@ const Register = ({navigation}) => {
       newArr[index].isSelected = true
       setActiveGender(newArr[index].label)
       setGender(newArr)
-  }
+    }
+    const updatePlan = (index) =>{
+        let newArr = [...plan];
+        newArr.forEach((plan) =>{
+        plan.isSelected = false
+        })
+        newArr[index].isSelected = true
+        setActivePlan(newArr[index].label)
+        setPlan(newArr)
+    }
   const displayMessage = (title,message) => {
     Platform.OS === 'android' ?
     ToastAndroid.show(message,ToastAndroid.LONG):
     Alert.alert(title,message,'OK')
   }
-    const register = () => {
+    const update = () => {
       const {errors,valid} = validateRegisterDate(name,age,height,weight,activeGender,email,password)
       if(!valid){
         displayMessage("Error",errors.error)
@@ -70,7 +91,7 @@ const Register = ({navigation}) => {
         .then(result =>{
           console.log(result)
           if(result?.status === 'success'){
-            navigation.replace('App')
+            navigation.replace('Home')
           }else displayMessage("error ",result?.status)
         })
         .catch(error =>{
@@ -80,7 +101,7 @@ const Register = ({navigation}) => {
     }
   return (
     <View style={styles.container}>
-      <Text style={{alignSelf:'center',marginTop:50,fontSize:20,fontWeight:'600',color:'#01882A'}}>Create your account</Text>
+      <Text style={{alignSelf:'center',marginTop:50,fontSize:20,fontWeight:'600',color:'#01882A'}}>Edit Profile</Text>
 
         <View style={[styles.input_view,{marginTop:30}]}>
         <Icon name='person-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
@@ -160,6 +181,7 @@ const Register = ({navigation}) => {
         <TextInput
               style={styles.inputField}
               placeholder="Email"
+              editable={false}
               placeholderTextColor='#C4C4C4'
               onChangeText = {(value) => {setEmail(value)}}
               returnKeyType='next'
@@ -170,53 +192,36 @@ const Register = ({navigation}) => {
             />
         </View>
         <View style={[styles.input_view,{marginTop:10}]}>
-        <Icon name='lock-closed-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
-        <TextInput
-              style={styles.inputField}
-              placeholder="Password"
-              placeholderTextColor='#C4C4C4'
-              onChangeText = {(value) => {setPassword(value)}}
-              returnKeyType='next'
-              multiline={false}
-              value={password}
-              secureTextEntry={true}
-              keyboardType='default'
-              autoCorrect={false}
-            />
+        <Icon name='leaf-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
+        <View style={{marginLeft:15,flexDirection: 'row'}}>
+          {
+            plan.map((plan,index) =>(
+            <TouchableOpacity onPress={() => {updatePlan(index)}} activeOpacity={0.5} key={index} style={{flexDirection: 'row',justifyContent:'center',alignItems:'center',marginRight:15}}>
+            <View style={styles.radioO}>
+              <View style={plan.isSelected ? styles.radioI : null}/>
+            </View>
+            <Text style={{marginLeft:4}}>{plan.label}</Text>
+            </TouchableOpacity>
+            ))
+          }
+        </View>
         </View>
 
 
         <TouchableOpacity
           onPress={() => {
-            register()
+            update()
           }}
           activeOpacity={0.5}
           style={styles.loginStyle}>
-          <Text style={styles.loginText}>Register</Text>
+          <Text style={styles.loginText}>Update</Text>
         </TouchableOpacity>
-
-        <View style={styles.registerContainer}>
-          <Text style={styles.registerLabel}>already have an account?</Text>
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Login')
-            }}
-            activeOpacity={0.5}>
-            <Text
-              style={[
-                styles.registerLabel,
-                {color: '#FEC111', marginLeft: 5},
-              ]}>
-              Login
-            </Text>
-          </TouchableOpacity>
-        </View>
 
     </View>
   )
 }
 
-export default Register
+export default Profile
 
 const styles = StyleSheet.create({
     container: {

@@ -17,7 +17,7 @@ const Home = ({navigation}) => {
       <Text style={{fontSize:20,fontWeight:'800',color:'#01882A'}}>What's your primary goal?</Text>
 
       <View style={{marginTop:30,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-        <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('Plan')}} style={styles.card}>
+        <TouchableOpacity activeOpacity={0.5} onPress={() => {navigation.navigate('plan')}} style={styles.card}>
             <View style={styles.card_icon}>
             <Image source={require('./assets/plan.png')} style={{height:60,width:60,resizeMode:'contain'}} />
             </View>
@@ -31,7 +31,7 @@ const Home = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={{marginTop:20,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-        <TouchableOpacity activeOpacity={0.5} style={styles.card}>
+        <TouchableOpacity onPress={() => {navigation.navigate('bmi')}} activeOpacity={0.5} style={styles.card}>
             <View style={styles.card_icon}>
             <Image source={require('./assets/bmi.png')} style={{height:60,width:60,resizeMode:'contain'}} />
             </View>

@@ -12,41 +12,29 @@ import Register from './src/Register';
 import BMI from './src/BMI';
 import { BookmarkStackNavigator, HomeStackNavigator, ProfileStackNavigator, MealsStackNavigator } from './src/Components/CustomeStack';
 import CustomTabBar from './src/Components/CustomTabBar';
+import App from './App';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const App = () => {
+const Start = () => {
+
+
   return (
-    <SafeAreaProvider style={{flex:1,backgroundColor:'#eee'}}>
-    {/* <NavigationContainer> */}
-    <Tab.Navigator
-    screenOptions={{
-      header:()=>(
-        <View style={{height:0}}></View>
-      )
-    }}
-       barStyle={{ backgroundColor: 'red' }} tabBar={props => <CustomTabBar {...props} />}>
-      <Tab.Screen name="Home" component={HomeStackNavigator} />
-      <Tab.Screen name="Meals" component={MealsStackNavigator} />
-      <Tab.Screen name="Favorite" component={BookmarkStackNavigator} />
-      <Tab.Screen name="Profile" component={ProfileStackNavigator} />
-    </Tab.Navigator>
-    {/* </NavigationContainer> */}
     
-    {/* <SafeAreaProvider style={{flex:1,backgroundColor:'#eee'}}>
+    <SafeAreaProvider style={{flex:1,backgroundColor:'#eee'}}>
     <NavigationContainer>
       <Stack.Navigator
       screenOptions={{
             header:()=>(<View style={{height:0}}></View>)
         }}>
-        <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name="Plan" component={Plan} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="App" component={App} />
       </Stack.Navigator>
     </NavigationContainer>
-    </SafeAreaProvider> */}
-    </SafeAreaProvider>
+    </SafeAreaProvider> 
   );
 };
 
-export default App;
+export default Start;

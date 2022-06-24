@@ -40,7 +40,7 @@ const Login = ({navigation}) => {
         })
         .then(result =>{
           if(result?.status === 'logged'){
-            navigation.replace('Home')
+            navigation.replace('App')
           }else displayMessage("error ",result?.status)
         })
         .catch(error =>{
