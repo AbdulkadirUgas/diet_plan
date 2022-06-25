@@ -1,7 +1,8 @@
 import { StyleSheet, Text,Image, View, TouchableOpacity } from 'react-native'
-import React from 'react'
+import React,{useEffect} from 'react'
 
 const Home = ({navigation}) => {
+  
   return (
     <View style={styles.container}>
 
@@ -23,7 +24,7 @@ const Home = ({navigation}) => {
             </View>
             <Text style={{marginTop:3, fontSize:20,color:'#01882A'}}>My Plan</Text>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.5} style={[styles.card,{marginLeft:20}]}>
+        <TouchableOpacity onPress={() => {navigation.navigate('wng')}} activeOpacity={0.5} style={[styles.card,{marginLeft:20}]}>
             <View style={styles.card_icon}>
             <Image source={require('./assets/weight_mng.png')} style={{height:60,width:60,resizeMode:'contain'}} />
             </View>
@@ -37,7 +38,7 @@ const Home = ({navigation}) => {
             </View>
             <Text style={{marginTop:3, fontSize:20,color:'#01882A'}}>BMI</Text>
         </TouchableOpacity>
-        <TouchableOpacity activeOpacity={0.5} style={[styles.card,{marginLeft:20}]}>
+        <TouchableOpacity onPress={() => {navigation.navigate('feedback')}} activeOpacity={0.5} style={[styles.card,{marginLeft:20}]}>
             <View style={styles.card_icon}>
             <Image source={require('./assets/feedback.png')} style={{height:60,width:60,resizeMode:'contain'}} />
             </View>

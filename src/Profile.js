@@ -1,11 +1,13 @@
 import { Alert, Platform, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native'
-import React,{useState} from 'react'
+import React,{useEffect,useState} from 'react'
 import { Icon } from "@rneui/themed";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {validateRegisterDate} from '../Validate'
 import { serverIP } from '../Constants';
 
 const Profile = ({navigation}) => {
+    const [userData,setUserData] = useState({})
     const [name,setName] = useState('')
     const [age,setAge] = useState('')
     const [height,setHeight] = useState('')
@@ -14,6 +16,7 @@ const Profile = ({navigation}) => {
     const [password,setPassword] = useState('')
     const [activeGender,setActiveGender] = useState('')
     const [activePlan,setActivePlan] = useState('')
+    const [activeUser,setActiveUser] = useState([]);
 
     const [gender,setGender] = useState([
       {
@@ -27,10 +30,12 @@ const Profile = ({navigation}) => {
     ])
     const [plan,setPlan] = useState([
         {
+          id:'1',
           label: 'Gain',
           isSelected: false
         },
         {
+          id:'2',
           label: 'Loss',
           isSelected: false
         }
@@ -51,29 +56,89 @@ const Profile = ({navigation}) => {
         plan.isSelected = false
         })
         newArr[index].isSelected = true
-        setActivePlan(newArr[index].label)
+        setActivePlan(newArr[index].id)
         setPlan(newArr)
     }
-  const displayMessage = (title,message) => {
-    Platform.OS === 'android' ?
-    ToastAndroid.show(message,ToastAndroid.LONG):
-    Alert.alert(title,message,'OK')
-  }
+    const activateCurrentGender = (cur_gender) =>{
+      let newArr = [...gender];
+      newArr.forEach((gender) =>{
+      if(gender.label === cur_gender)
+      gender.isSelected = true
+      else gender.isSelected = false
+      })
+      setActiveGender(cur_gender)
+      setGender(newArr)
+    }
+    const activateCurrentPlan = (planID) =>{
+      let newArr = [...plan];
+      newArr.forEach((plan) =>{
+      if(plan.id === planID)
+        plan.isSelected = true
+      else plan.isSelected = false
+      })
+      setActivePlan(planID)
+      setPlan(newArr)
+
+    }
+    const displayMessage = (title,message) => {
+      Platform.OS === 'android' ?
+      ToastAndroid.show(message,ToastAndroid.LONG):
+      Alert.alert(title,message,'OK')
+    }
+    useEffect(() => {
+      loadUserData()
+      .then(fetchProfileInfo())
+    },[])
+
+    const loadUserData = async () => {
+      const userData = await AsyncStorage.getItem('userInfo')
+      const data = userData != null ? JSON.parse(userData) : null
+      setActiveUser(data)
+    }
+  const fetchProfileInfo = () => {
+    var formData = new FormData();
+    formData.append('userID', activeUser?.userID);
+    let url = serverIP+'user.php?user=getUserInfo'
+    fetch(url,{
+      method: 'post',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data'
+      },
+      body: formData
+    })
+    .then(response => {
+      if(!response.ok){
+        throw new Error('could not fetch data')
+      }
+      return response.json()
+    })
+    .then(result =>{
+        setUserData(result?.result[0]);
+        activateCurrentPlan(result?.result[0].catID)
+        activateCurrentGender(result?.result[0].gender)
+    })
+    .catch(error =>{
+      console.log(error)
+    })
+    const displayData = (data) => {
+      setName(data.name)
+    }
+}
     const update = () => {
-      const {errors,valid} = validateRegisterDate(name,age,height,weight,activeGender,email,password)
+      const {errors,valid} = validateRegisterDate(userData.name,userData.age,userData.height,userData.weight,userData.activeGender,userData.email,'da')
       if(!valid){
         displayMessage("Error",errors.error)
       }else{
         var formData = new FormData();
-        formData.append('name', name);
-        formData.append('email', email);
-        formData.append('age', age);
-        formData.append('height', height);
-        formData.append('weight', weight);
+        formData.append('userID', activeUser?.userID);
+        formData.append('name', userData.name);
+        formData.append('age', userData.age);
+        formData.append('height', userData.height);
+        formData.append('weight', userData.weight);
         formData.append('gender', activeGender);
-        formData.append('plan', '1');
-        formData.append('password', password);
-        let url = serverIP+'user.php?user=register'
+        formData.append('plan', activePlan);
+        let url = serverIP+'user.php?user=update'
         fetch(url,{
           method: 'post',
           headers: {
@@ -90,9 +155,9 @@ const Profile = ({navigation}) => {
         })
         .then(result =>{
           console.log(result)
-          if(result?.status === 'success'){
-            navigation.replace('Home')
-          }else displayMessage("error ",result?.status)
+          // if(result?.status === 'updated'){
+          //   displayMessage('Updated','Profile update succesfully')
+          // }else displayMessage("error ",result?.status)
         })
         .catch(error =>{
           console.log(error)
@@ -109,52 +174,55 @@ const Profile = ({navigation}) => {
               style={styles.inputField}
               placeholder="Full Name"
               placeholderTextColor='#C4C4C4'
-              onChangeText = {(value) => {setName(value)}}
+              onChangeText = {(value) => {setUserData({...userData,name:value})}}
               returnKeyType='next'
               multiline={false}
-              value={name}
+              value={userData?.name}
               keyboardType='default'
               autoCorrect={false}
             />
         </View>
+        
         <View style={[styles.input_view,{marginTop:10}]}>
         <Icon name='person-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
         <TextInput
               style={styles.inputField}
               placeholder="Age"
               placeholderTextColor='#C4C4C4'
-              onChangeText = {(value) => {setAge(value)}}
+              onChangeText = {(value) => {setUserData({...userData,age:value})}}
               returnKeyType='next'
               multiline={false}
-              value={age}
+              value={userData?.age}
               keyboardType='number-pad'
               autoCorrect={false}
             />
         </View>
+        
         <View style={[styles.input_view,{marginTop:10}]}>
         <Icon name='arrow-up-circle-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
         <TextInput
               style={styles.inputField}
               placeholder="Height"
               placeholderTextColor='#C4C4C4'
-              onChangeText = {(value) => {setHeight(value)}}
+              onChangeText = {(value) => {setUserData({...userData,height:value})}}
               returnKeyType='next'
               multiline={false}
-              value={height}
+              value={userData?.height}
               keyboardType='numeric'
               autoCorrect={false}
             />
         </View>
+        
         <View style={[styles.input_view,{marginTop:10}]}>
         <Icon name='arrow-up-circle-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
         <TextInput
               style={styles.inputField}
               placeholder="Weight"
               placeholderTextColor='#C4C4C4'
-              onChangeText = {(value) => {setWeight(value)}}
+              onChangeText = {(value) => {setUserData({...userData,weight:value})}}
               returnKeyType='next'
               multiline={false}
-              value={weight}
+              value={userData?.weight}
               keyboardType='numeric'
               autoCorrect={false}
             />
@@ -183,14 +251,15 @@ const Profile = ({navigation}) => {
               placeholder="Email"
               editable={false}
               placeholderTextColor='#C4C4C4'
-              onChangeText = {(value) => {setEmail(value)}}
+              onChangeText = {(value) => {}}
               returnKeyType='next'
               multiline={false}
-              value={email}
+              value={userData?.email}
               keyboardType='email-address'
               autoCorrect={false}
             />
         </View>
+        
         <View style={[styles.input_view,{marginTop:10}]}>
         <Icon name='leaf-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
         <View style={{marginLeft:15,flexDirection: 'row'}}>

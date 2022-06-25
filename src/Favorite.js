@@ -1,11 +1,11 @@
-import { StyleSheet, Text,Image, View, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, Text,Image, View, TouchableOpacity, ScrollView, Alert } from 'react-native'
 import React,{useEffect,useState} from 'react'
 import { Icon } from "@rneui/themed";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { serverIP } from '../Constants';
 
-const Plan = () => {
+const Favorite = () => {
     const [meals,setMeals] = useState([]);
     const [activeUser,setActiveUser] = useState([]);
     
@@ -22,7 +22,7 @@ const Plan = () => {
     const fetchData = () => {
         var formData = new FormData();
         formData.append('userID', activeUser?.userID);
-        let url = serverIP+'meal.php?meal=getAll'
+        let url = serverIP+'user.php?user=getFav'
         fetch(url,{
           method: 'post',
           headers: {
@@ -45,18 +45,17 @@ const Plan = () => {
         })
     }
 
-    const changeFav = (index) => {
+    const removeFav = (index) => {
       let newArr = [...meals];
       newArr[index].isFav = !newArr[index].isFav
-      setMeals(newArr)
-      newArr[index].isFav ? updateFavorite('add',newArr[index].mealID) : updateFavorite('remove',newArr[index].mealID)
+    //   setMeals(newArr)
+      updateFavorite(newArr[index].mealID)
     }
-    const updateFavorite = (status,mealID) => {
+    const updateFavorite = (mealID) => {
       var formData = new FormData();
         formData.append('userID', activeUser?.userID);
         formData.append('mealID', mealID);
-        let filter = status === 'add' ? 'addFav' : 'removeFav'
-        let url = serverIP+'user.php?user='+filter
+        let url = serverIP+'user.php?user=removeFav'
         fetch(url,{
           method: 'post',
           headers: {
@@ -77,6 +76,20 @@ const Plan = () => {
           console.log(error)
         })
     }
+
+    const createAlert = (index) =>
+    Alert.alert(
+      "Alert Title"+index,
+      "My Alert Msg",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () =>  removeFav(index)}
+      ]
+    );
   return (
     <View style={styles.container}>
       
@@ -89,30 +102,40 @@ const Plan = () => {
       </View>
 
       <View style={{backgroundColor:'#f5f5f5',flex:1,marginTop:20,paddingTop:30,borderTopRightRadius:40,borderTopLeftRadius:40,}}>
-      <ScrollView>
       {
+        meals.length > 0 ? 
+        <ScrollView>
+      {
+        
         meals.map((meal,index) => (
-            <FoodCard updateFav={()=>changeFav(index)} meal={meal} key={meal.mealID}/>
+            <FoodCard removeFav={()=>createAlert(index)} meal={meal} key={meal.mealID}/>
         ))
-      }
+        }
       </ScrollView>
+      :
+        (
+            <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+                <Text style={{fontSize:20}}>No favorite meal found</Text>
+            </View>
+        )
+      }
       </View>
     </View>
   )
 }
-const FoodCard = ({meal,updateFav}) => (
+const FoodCard = ({meal,removeFav}) => (
     <View style={styles.food_card}>
         <Image source={{uri:serverIP+'/images/'+meal.image}} style={{height:100,width:100,resizeMode:'contain'}} />
         <View style={{}}>
             <Text style={{fontSize:20,fontWeight:'600',color:'#01882A'}}>{meal.type}</Text>
             <Text style={{fontSize:14,marginTop:4,color:'#004'}}>{meal.name}</Text>
         </View>
-        <TouchableOpacity onPress={()=>{updateFav()}} activeOpacity={0.5} style={[styles.bookmark_icon,meal?.isFav ? {backgroundColor:'#FEC111'}:{borderColor:'#FEC111',borderWidth:1}]}>
-        <Icon name={meal?.isFav ? 'heart' : 'heart-outline'} type='ionicon' color={meal?.isFav ? '#fff' : '#FEC111'} size={20}/>
+        <TouchableOpacity onPress={()=>{removeFav()}} activeOpacity={0.5} style={[styles.bookmark_icon]}>
+        <Icon name={'trash'} type='ionicon' color={'#fff'} size={20}/>
         </TouchableOpacity>
     </View>
 )
-export default Plan
+export default Favorite
 
 const styles = StyleSheet.create({
     container: {
@@ -142,6 +165,7 @@ const styles = StyleSheet.create({
         width:30,
         height:30,
         borderRadius:50,
+        backgroundColor:'#FEC111',
         justifyContent:'center',
         alignItems:'center'
     }

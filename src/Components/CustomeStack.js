@@ -7,6 +7,9 @@ import Home from '../Home';
 import Plan from '../Plan';
 import BMI from '../BMI';
 import Profile from '../Profile';
+import Favorite from '../Favorite';
+import WeightMNG from '../WeightMNG';
+import Feedback from '../Feedback';
 
 
 
@@ -21,6 +24,8 @@ const HomeStackNavigator = () => {
             <Stack.Screen name="Home_" component={Home} />
             <Stack.Screen name="plan" component={Plan} />
             <Stack.Screen name="bmi" component={BMI} />
+            <Stack.Screen name="wng" component={WeightMNG} />
+            <Stack.Screen name="feedback" component={Feedback} />
         </Stack.Navigator>
     )
 }
@@ -44,7 +49,7 @@ const BookmarkStackNavigator = () => {
         screenOptions={{
             header:()=>(<View style={{height:0}}></View>)
         }}>
-            <Stack.Screen name="fav" component={Plan} />
+            <Stack.Screen name="fav" component={Favorite} />
         </Stack.Navigator>
     )
 }

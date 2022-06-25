@@ -1,6 +1,7 @@
 import { Alert, Image, Platform, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React, { useState } from 'react'
 import { Icon } from "@rneui/themed";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { serverIP } from '../Constants';
 
 const Login = ({navigation}) => {
@@ -11,6 +12,15 @@ const Login = ({navigation}) => {
       Platform.OS === 'android' ?
       ToastAndroid.show(message,ToastAndroid.LONG):
       Alert.alert(title,message,'OK')
+    }
+    const saveUserData = async (data) =>{
+      try {
+        const userData = JSON.stringify(data)
+        await AsyncStorage.setItem('userInfo', userData)
+      } catch (e) {
+        // saving error
+        console.log("error aa jira ",e)
+      }
     }
 
     const tryLogin = async () => {
@@ -39,8 +49,10 @@ const Login = ({navigation}) => {
           return response.json()
         })
         .then(result =>{
+          // console.log(result)
           if(result?.status === 'logged'){
-            navigation.replace('App')
+            saveUserData(result)
+            .then(navigation.replace('App'))
           }else displayMessage("error ",result?.status)
         })
         .catch(error =>{
