@@ -38,7 +38,7 @@ const Home = ({navigation}) => {
             </View>
             <Text style={{marginTop:3, fontSize:20,color:'#01882A'}}>BMI</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {navigation.navigate('feedback')}} activeOpacity={0.5} style={[styles.card,{marginLeft:20}]}>
+        <TouchableOpacity navigation={navigation} onPress={() => {navigation.navigate('feedback')}} activeOpacity={0.5} style={[styles.card,{marginLeft:20}]}>
             <View style={styles.card_icon}>
             <Image source={require('./assets/feedback.png')} style={{height:60,width:60,resizeMode:'contain'}} />
             </View>

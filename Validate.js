@@ -6,11 +6,20 @@ module.exports.validateRegisterDate = (fullname,age,height,weight,gender,email,p
     else if(age === ''){
         errors.error = 'Age is required'
     }
+    else if(age < 15){
+        errors.error = 'Age must be greater than 15'
+    }
     else if(height === ''){
         errors.error = 'Height is required'
     }
+    else if(height < 100){
+        errors.error = 'Height must be greater than 100cm'
+    }
     else if(weight === ''){
         errors.error = 'Weight is required'
+    }
+    else if(weight < 40){
+        errors.error = 'Weight must be greater than 40kg'
     }
     else if(gender === ''){
         errors.error = 'Select gender'

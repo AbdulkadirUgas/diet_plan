@@ -1,11 +1,13 @@
-import { Image, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { Alert, Image, Modal, Platform, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React,{useEffect,useState} from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Icon } from '@rneui/base'
 import { serverIP } from '../Constants';
 
-const Feedback = () => {
+const Feedback = ({navigation}) => {
     const [activeUser,setActiveUser] = useState({});
     const [message,setMessage] = useState('');
+    const [succes,setSuccess] = useState(false);
     useEffect(() => {
         loadUserData()
     },[])
@@ -14,9 +16,22 @@ const Feedback = () => {
         const data = userData != null ? JSON.parse(userData) : null
         setActiveUser(data)
     }
-    
+    const displayMessage = (title,message) => {
+      Platform.OS === 'android' ?
+      ToastAndroid.show(message,ToastAndroid.LONG):
+      Alert.alert(title,message,'OK')
+    }
+    const renderModal = () => (
+      <Modal animationType='slide'
+          transparent={true}
+          visible={succes}>
+          <ShowSuccess navigation={navigation}/>
+      </Modal>
+  )
+
   return (
     <View style={styles.container}>
+    {renderModal()}
       <View style={{flexDirection: 'row',justifyContent:'center',alignItems:'center',marginTop:40}}>
         <Image source={require('./assets/logo.png')} style={{height:100,width:100,resizeMode:'contain'}} />
         <View style={{marginLeft:10,justifyContent:'center',alignItems:'center'}}>
@@ -43,7 +58,7 @@ const Feedback = () => {
         </View>
         <TouchableOpacity
           onPress={() => {
-            
+            message === '' ? displayMessage('Error','Please enter a feedback') : setSuccess(true)
           }}
           activeOpacity={0.5}
           style={styles.loginStyle}>
@@ -55,8 +70,27 @@ const Feedback = () => {
   )
 }
 
-export default Feedback
 
+
+export default Feedback
+const ShowSuccess = ({navigation}) =>{
+  return (
+    <View style={{flex:1,backgroundColor:'black',justifyContent:'center',alignItems:'center',opacity:0.9}}>
+    <View style={{backgroundColor:'#FFF',padding:20,borderRadius:10}}>
+    <Text style={{fontSize:20,color:'#01882A'}}>Thanks for your feedback</Text>
+    <Text style={{marginTop:10}}>You will get our response as soon as possible</Text>
+    <TouchableOpacity onPress={()=>navigation.goBack()} style={{marginTop:20, backgroundColor:'#01882A',width:40,height:40,alignSelf:'center',justifyContent:'center',alignItems:'center',borderRadius:50}}>
+    <Icon
+        name='close'
+        type='ionicon'
+        color='#FFF'
+        size={20}
+        />
+    </TouchableOpacity>
+    </View>
+    </View>
+  )
+}
 const styles = StyleSheet.create({
     container: {
         flex:1,

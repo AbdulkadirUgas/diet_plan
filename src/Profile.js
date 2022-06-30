@@ -155,15 +155,16 @@ const Profile = ({navigation}) => {
         })
         .then(result =>{
           console.log(result)
-          // if(result?.status === 'updated'){
-          //   displayMessage('Updated','Profile update succesfully')
-          // }else displayMessage("error ",result?.status)
+          if(result?.status === 'updated'){
+            displayMessage('Updated','Profile update succesfully')
+          }else displayMessage("error ",result?.status)
         })
         .catch(error =>{
           console.log(error)
         })
       }
     }
+    
   return (
     <View style={styles.container}>
       <Text style={{alignSelf:'center',marginTop:50,fontSize:20,fontWeight:'600',color:'#01882A'}}>Edit Profile</Text>
