@@ -79,8 +79,8 @@ const Favorite = () => {
 
     const createAlert = (index) =>
     Alert.alert(
-      "Alert Title"+index,
-      "My Alert Msg",
+      "Are you sure you want to remove "+meals[index]?.name,
+      "",
       [
         {
           text: "Cancel",

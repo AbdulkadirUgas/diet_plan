@@ -3,6 +3,7 @@ import React,{useEffect,useState} from 'react'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Icon } from '@rneui/base'
 import { serverIP } from '../Constants';
+import Header from './Components/Header';
 
 const Feedback = ({navigation}) => {
     const [activeUser,setActiveUser] = useState({});
@@ -32,13 +33,14 @@ const Feedback = ({navigation}) => {
   return (
     <View style={styles.container}>
     {renderModal()}
-      <View style={{flexDirection: 'row',justifyContent:'center',alignItems:'center',marginTop:40}}>
+    <Header filter='back' title='Feedback' action={()=>{navigation.goBack()}}/>
+      {/* <View style={{flexDirection: 'row',justifyContent:'center',alignItems:'center',marginTop:40}}>
         <Image source={require('./assets/logo.png')} style={{height:100,width:100,resizeMode:'contain'}} />
         <View style={{marginLeft:10,justifyContent:'center',alignItems:'center'}}>
             <Text style={{fontSize:50,fontWeight:'900',color:'#01882A'}}>Weight</Text>
             <Text style={{fontSize:30,fontWeight:'200',color:'#FEC111'}}>management</Text>
         </View>
-      </View>
+      </View> */}
       <View style={{backgroundColor:'#f5f5f5',flex:1,marginTop:20,paddingTop:30,borderTopRightRadius:40,borderTopLeftRadius:40,}}>
       
       <View style={{backgroundColor:'#FFF',marginTop:20,marginLeft:20,marginRight:20,padding:30,borderRadius:20}}>

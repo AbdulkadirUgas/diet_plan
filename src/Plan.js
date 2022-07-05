@@ -4,8 +4,9 @@ import { Icon } from "@rneui/themed";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { serverIP } from '../Constants';
+import Header from './Components/Header';
 
-const Plan = () => {
+const Plan = ({navigation}) => {
     const [meals,setMeals] = useState([]);
     const [activeUser,setActiveUser] = useState([]);
     
@@ -79,14 +80,14 @@ const Plan = () => {
     }
   return (
     <View style={styles.container}>
-      
-      <View style={{flexDirection: 'row',justifyContent:'center',alignItems:'center',marginTop:40}}>
+    <Header filter='back' title='Meal plan' action={()=>{navigation.goBack()}}/>
+      {/* <View style={{flexDirection: 'row',justifyContent:'center',alignItems:'center',marginTop:40}}>
         <Image source={require('./assets/logo.png')} style={{height:100,width:100,resizeMode:'contain'}} />
         <View style={{marginLeft:10,justifyContent:'center',alignItems:'center'}}>
             <Text style={{fontSize:50,fontWeight:'900',color:'#01882A'}}>Meal</Text>
             <Text style={{fontSize:30,fontWeight:'200',color:'#FEC111'}}>plan</Text>
         </View>
-      </View>
+      </View> */}
 
       <View style={{backgroundColor:'#f5f5f5',flex:1,marginTop:20,paddingTop:30,borderTopRightRadius:40,borderTopLeftRadius:40,}}>
       <ScrollView>

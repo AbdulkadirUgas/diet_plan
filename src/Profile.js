@@ -39,7 +39,7 @@ const Profile = ({navigation}) => {
           label: 'Loss',
           isSelected: false
         }
-      ])
+    ])
 
     const selectGender = (index) =>{
       let newArr = [...gender];
@@ -95,36 +95,36 @@ const Profile = ({navigation}) => {
       const data = userData != null ? JSON.parse(userData) : null
       setActiveUser(data)
     }
-  const fetchProfileInfo = () => {
-    var formData = new FormData();
-    formData.append('userID', activeUser?.userID);
-    let url = serverIP+'user.php?user=getUserInfo'
-    fetch(url,{
-      method: 'post',
-      headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'multipart/form-data'
-      },
-      body: formData
-    })
-    .then(response => {
-      if(!response.ok){
-        throw new Error('could not fetch data')
+    const fetchProfileInfo = () => {
+      var formData = new FormData();
+      formData.append('userID', activeUser?.userID);
+      let url = serverIP+'user.php?user=getUserInfo'
+      fetch(url,{
+        method: 'post',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data'
+        },
+        body: formData
+      })
+      .then(response => {
+        if(!response.ok){
+          throw new Error('could not fetch data')
+        }
+        return response.json()
+      })
+      .then(result =>{
+          setUserData(result?.result[0]);
+          activateCurrentPlan(result?.result[0].catID)
+          activateCurrentGender(result?.result[0].gender)
+      })
+      .catch(error =>{
+        console.log(error)
+      })
+      const displayData = (data) => {
+        setName(data.name)
       }
-      return response.json()
-    })
-    .then(result =>{
-        setUserData(result?.result[0]);
-        activateCurrentPlan(result?.result[0].catID)
-        activateCurrentGender(result?.result[0].gender)
-    })
-    .catch(error =>{
-      console.log(error)
-    })
-    const displayData = (data) => {
-      setName(data.name)
     }
-}
     const update = () => {
       const {errors,valid} = validateRegisterDate(userData.name,userData.age,userData.height,userData.weight,userData.activeGender,userData.email,'da')
       if(!valid){
@@ -164,7 +164,9 @@ const Profile = ({navigation}) => {
         })
       }
     }
-    
+    const logout = () => {
+      console.log('logout')
+    }
   return (
     <View style={styles.container}>
       <Text style={{alignSelf:'center',marginTop:50,fontSize:20,fontWeight:'600',color:'#01882A'}}>Edit Profile</Text>
@@ -215,7 +217,7 @@ const Profile = ({navigation}) => {
         </View>
         
         <View style={[styles.input_view,{marginTop:10}]}>
-        <Icon name='arrow-up-circle-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
+        <Icon name='arrow-forward-circle-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
         <TextInput
               style={styles.inputField}
               placeholder="Weight"
@@ -238,7 +240,7 @@ const Profile = ({navigation}) => {
             <View style={styles.radioO}>
               <View style={gender.isSelected ? styles.radioI : null}/>
             </View>
-            <Text style={{marginLeft:4}}>{gender.label}</Text>
+            <Text style={{marginLeft:4,color:'black'}}>{gender.label}</Text>
             </TouchableOpacity>
             ))
           }
@@ -270,7 +272,7 @@ const Profile = ({navigation}) => {
             <View style={styles.radioO}>
               <View style={plan.isSelected ? styles.radioI : null}/>
             </View>
-            <Text style={{marginLeft:4}}>{plan.label}</Text>
+            <Text style={{marginLeft:4,color:'black'}}>{plan.label}</Text>
             </TouchableOpacity>
             ))
           }
@@ -285,6 +287,13 @@ const Profile = ({navigation}) => {
           activeOpacity={0.5}
           style={styles.loginStyle}>
           <Text style={styles.loginText}>Update</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {navigation.replace('Login')}}
+          activeOpacity={0.5}
+          style={[styles.loginStyle,{backgroundColor:'#E23C3C',marginTop:20}]}>
+          <Text style={styles.loginText}>Logout</Text>
         </TouchableOpacity>
 
     </View>

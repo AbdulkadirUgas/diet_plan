@@ -63,7 +63,7 @@ const Login = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Text style={{alignSelf:'center',marginTop:50,fontSize:20,fontWeight:'600',color:'#01882A'}}>Login</Text>
-      <Image source={require('./assets/logo.png')} style={{height:120,width:120,resizeMode:'contain',alignSelf:'center',marginTop:50}} />
+      <Image source={require('./assets/logo.png')} style={{height:150,width:150,resizeMode:'contain',alignSelf:'center',marginTop:50}} />
         
         <View style={[styles.input_view,{marginTop:50}]}>
         <Icon name='mail' type='ionioc' color='#000' size={20} style={{marginLeft:20}}/>

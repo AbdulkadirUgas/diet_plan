@@ -1,23 +1,73 @@
 import { Image, StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React,{useEffect,useState} from 'react'
+import Header from './Components/Header'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { serverIP } from '../Constants';
 
-const BMI = () => {
+const BMI = ({navigation}) => {
+  const [userData,setUserData] = useState({})
+  const [activeUser,setActiveUser] = useState([]);
+  const [bmi,setBMI] = useState('');
+  const [status,setStatus] = useState('Normal');
+  useEffect(() => {
+    loadUserData()
+    .then(fetchProfileInfo())
+  },[])
+
+  const loadUserData = async () => {
+    const userData = await AsyncStorage.getItem('userInfo')
+    const data = userData != null ? JSON.parse(userData) : null
+    setActiveUser(data)
+  }
+  const fetchProfileInfo = () => {
+    var formData = new FormData();
+    formData.append('userID', activeUser?.userID);
+    let url = serverIP+'user.php?user=getUserInfo'
+    fetch(url,{
+      method: 'post',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'multipart/form-data'
+      },
+      body: formData
+    })
+    .then(response => {
+      if(!response.ok){
+        throw new Error('could not fetch data')
+      }
+      return response.json()
+    })
+    .then(result =>{
+        setUserData(result?.result[0]);
+        const weight = result?.result[0].weight
+        let height = result?.result[0].height
+        height = height/100
+        setBMI(weight / (height * height))
+        if(weight / (height * height) <= 18.4 ) setStatus('Underweight')
+        else if(weight / (height * height) >= 18.5 &&  weight / (height * height) <= 24.9 )setStatus('Underweight')
+        else if(weight / (height * height) >= 25 &&  weight / (height * height) <= 39.9 )setStatus('Overweight')
+        else if(weight / (height * height) >= 40 )setStatus('Obese')
+    })
+    .catch(error =>{
+      console.log(error)
+    })
+    const displayData = (data) => {
+      setName(data.name)
+    }
+  }
   return (
     <View style={styles.container}>
-      <View style={{flexDirection: 'row',justifyContent:'center',alignItems:'center',marginTop:40}}>
-        <Image source={require('./assets/logo.png')} style={{height:100,width:100,resizeMode:'contain'}} />
-        <View style={{marginLeft:10,justifyContent:'center',alignItems:'center'}}>
-            <Text style={{fontSize:50,fontWeight:'900',color:'#01882A'}}>BMI</Text>
-            <Text style={{fontSize:30,fontWeight:'200',color:'#FEC111'}}>status</Text>
-        </View>
-      </View>
+    <Header filter='back' title='BMI test' action={()=>{navigation.goBack()}}/>
       <View style={{backgroundColor:'#f5f5f5',flex:1,marginTop:20,paddingTop:30,borderTopRightRadius:40,borderTopLeftRadius:40,}}>
       <Text style={{fontSize:20,fontWeight:'600',color:'#01882A',alignSelf:'center'}}>Your result</Text>
       <View style={{backgroundColor:'#FFF',marginTop:20,marginLeft:20,marginRight:20,padding:30,borderRadius:20}}>
         <Text style={{fontSize:20,fontWeight:'700',color:'#01882A',alignSelf:'center'}}>Normal</Text>
-        <Text style={{fontSize:20,fontWeight:'700',marginTop:5,color:'#F44336',alignSelf:'center'}}>22.2</Text>
-        <Text style={{fontSize:20,marginTop:5,alignSelf:'center'}}>You have a normal body weight</Text>
-        <Text style={{fontSize:20,marginTop:5,alignSelf:'center'}}>Good job!</Text>
+        <Text style={{fontSize:20,fontWeight:'700',marginTop:5,color:'#F44336',alignSelf:'center'}}>{Math.round(bmi*100)/100}</Text>
+
+        <Text style={{fontSize:20,marginTop:25}}>Your weight in kilogram: {userData.weight}KG</Text>
+        <Text style={{fontSize:20,marginTop:10}}>Your height in meters {userData.height}M</Text>
+        <Text style={{fontSize:20,marginTop:10}}>Your body weight is {status}</Text>
+        <Text style={{fontSize:20,marginTop:10}}>Good job!</Text>
       </View>
       </View>
     </View>

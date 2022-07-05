@@ -13,6 +13,7 @@ const Register = ({navigation}) => {
     const [email,setEmail] = useState('')
     const [password,setPassword] = useState('')
     const [activeGender,setActiveGender] = useState('')
+    const [activePlan,setActivePlan] = useState('')
 
     const [gender,setGender] = useState([
       {
@@ -24,6 +25,18 @@ const Register = ({navigation}) => {
         isSelected: false
       }
     ])
+    const [plan,setPlan] = useState([
+      {
+        id:'1',
+        label: 'Gain',
+        isSelected: false
+      },
+      {
+        id:'2',
+        label: 'Loss',
+        isSelected: false
+      }
+    ])
     const selectGender = (index) =>{
       let newArr = [...gender];
       newArr.forEach((gender) =>{
@@ -32,6 +45,15 @@ const Register = ({navigation}) => {
       newArr[index].isSelected = true
       setActiveGender(newArr[index].label)
       setGender(newArr)
+    }
+    const updatePlan = (index) =>{
+      let newArr = [...plan];
+      newArr.forEach((plan) =>{
+      plan.isSelected = false
+      })
+      newArr[index].isSelected = true
+      setActivePlan(newArr[index].id)
+      setPlan(newArr)
   }
   const displayMessage = (title,message) => {
     Platform.OS === 'android' ?
@@ -50,7 +72,7 @@ const Register = ({navigation}) => {
         formData.append('height', height);
         formData.append('weight', weight);
         formData.append('gender', activeGender);
-        formData.append('plan', '1');
+        formData.append('plan', activePlan);
         formData.append('password', password);
         let url = serverIP+'user.php?user=register'
         fetch(url,{
@@ -80,7 +102,7 @@ const Register = ({navigation}) => {
     }
   return (
     <View style={styles.container}>
-      <Text style={{alignSelf:'center',marginTop:50,fontSize:20,fontWeight:'600',color:'#01882A'}}>Create your account</Text>
+      <Text style={{alignSelf:'center',marginTop:60,fontSize:20,fontWeight:'600',color:'#01882A'}}>Create your account</Text>
 
         <View style={[styles.input_view,{marginTop:30}]}>
         <Icon name='person-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
@@ -125,7 +147,7 @@ const Register = ({navigation}) => {
             />
         </View>
         <View style={[styles.input_view,{marginTop:10}]}>
-        <Icon name='arrow-up-circle-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
+        <Icon name='arrow-forward-circle-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
         <TextInput
               style={styles.inputField}
               placeholder="Weight"
@@ -148,7 +170,23 @@ const Register = ({navigation}) => {
             <View style={styles.radioO}>
               <View style={gender.isSelected ? styles.radioI : null}/>
             </View>
-            <Text style={{marginLeft:4}}>{gender.label}</Text>
+            <Text style={{marginLeft:4,color:'black'}}>{gender.label}</Text>
+            </TouchableOpacity>
+            ))
+          }
+        </View>
+        </View>
+
+        <View style={[styles.input_view,{marginTop:10}]}>
+        <Icon name='leaf-outline' type='ionicon' color='#000' size={20} style={{marginLeft:20}}/>
+        <View style={{marginLeft:15,flexDirection: 'row'}}>
+          {
+            plan.map((plan,index) =>(
+            <TouchableOpacity onPress={() => {updatePlan(index)}} activeOpacity={0.5} key={index} style={{flexDirection: 'row',justifyContent:'center',alignItems:'center',marginRight:15}}>
+            <View style={styles.radioO}>
+              <View style={plan.isSelected ? styles.radioI : null}/>
+            </View>
+            <Text style={{marginLeft:4,color:'black'}}>{plan.label}</Text>
             </TouchableOpacity>
             ))
           }
