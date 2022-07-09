@@ -110,12 +110,12 @@ const Favorite = () => {
         meals.map((meal,index) => (
             <FoodCard removeFav={()=>createAlert(index)} meal={meal} key={meal.mealID}/>
         ))
-        }
+      }
       </ScrollView>
       :
         (
             <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
-                <Text style={{fontSize:20}}>No favorite meal found</Text>
+                <Text style={{fontSize:20,color:'black'}}>No favorite meal found</Text>
             </View>
         )
       }

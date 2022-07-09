@@ -61,13 +61,22 @@ const BMI = ({navigation}) => {
       <View style={{backgroundColor:'#f5f5f5',flex:1,marginTop:20,paddingTop:30,borderTopRightRadius:40,borderTopLeftRadius:40,}}>
       <Text style={{fontSize:20,fontWeight:'600',color:'#01882A',alignSelf:'center'}}>Your result</Text>
       <View style={{backgroundColor:'#FFF',marginTop:20,marginLeft:20,marginRight:20,padding:30,borderRadius:20}}>
-        <Text style={{fontSize:20,fontWeight:'700',color:'#01882A',alignSelf:'center'}}>Normal</Text>
+        <Text style={{fontSize:20,fontWeight:'700',color:'#01882A',alignSelf:'center'}}>{status}</Text>
         <Text style={{fontSize:20,fontWeight:'700',marginTop:5,color:'#F44336',alignSelf:'center'}}>{Math.round(bmi*100)/100}</Text>
 
-        <Text style={{fontSize:20,marginTop:25}}>Your weight in kilogram: {userData.weight}KG</Text>
-        <Text style={{fontSize:20,marginTop:10}}>Your height in meters {userData.height}M</Text>
-        <Text style={{fontSize:20,marginTop:10}}>Your body weight is {status}</Text>
-        <Text style={{fontSize:20,marginTop:10}}>Good job!</Text>
+        <View style={{flexDirection:'row',marginTop:25,alignItems:'center'}}>
+        <Text style={{fontSize:18,color:'black'}}>Your weight in kilogram: </Text>
+        <Text style={{fontSize:18,color:'black',fontWeight:'700'}}> {userData.weight}KG</Text>
+        </View>
+        <View style={{flexDirection:'row',marginTop:10,alignItems:'center'}}>
+        <Text style={{fontSize:18,color:'black'}}>Your height in meters:</Text>
+        <Text style={{fontSize:18,color:'black',fontWeight:'700'}}> {userData.height}M</Text>
+        </View>
+        <View style={{flexDirection:'row',marginTop:10,alignItems:'center'}}>
+        <Text style={{fontSize:18,color:'black'}}>Your body weight:</Text>
+        <Text style={{fontSize:18,color:'black',fontWeight:'700'}}> {status}</Text>
+        </View>
+        <Text style={{fontSize:18,marginTop:10,color:'black',fontWeight:'700'}}>Good job!</Text>
       </View>
       </View>
     </View>

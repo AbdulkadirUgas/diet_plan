@@ -1,4 +1,4 @@
-import { StyleSheet, Text,Image, View, TouchableOpacity, ScrollView } from 'react-native'
+import { StyleSheet, Text,Image, View, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
 import React,{useEffect,useState} from 'react'
 import { Icon } from "@rneui/themed";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -90,13 +90,22 @@ const Plan = ({navigation}) => {
       </View> */}
 
       <View style={{backgroundColor:'#f5f5f5',flex:1,marginTop:20,paddingTop:30,borderTopRightRadius:40,borderTopLeftRadius:40,}}>
-      <ScrollView>
+      
       {
-        meals.map((meal,index) => (
-            <FoodCard updateFav={()=>changeFav(index)} meal={meal} key={meal.mealID}/>
-        ))
+        meals.length > 0 ?
+        <ScrollView>
+          {
+            meals.map((meal,index) => (
+              <FoodCard updateFav={()=>changeFav(index)} meal={meal} key={meal.mealID}/>
+            ))
+          }
+        </ScrollView>
+        :
+        <View style={{flex:1,justifyContent:'center',alignItems:'center'}}>
+          <ActivityIndicator color={"#01882A"} size={100}/>
+        </View>
       }
-      </ScrollView>
+      
       </View>
     </View>
   )
