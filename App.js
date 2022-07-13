@@ -27,10 +27,26 @@ const App = () => {
       )
     }}
        barStyle={{ backgroundColor: 'red' }} tabBar={props => <CustomTabBar {...props} />}>
-      <Tab.Screen name="Home" component={HomeStackNavigator} />
-      <Tab.Screen name="Meals" component={MealsStackNavigator} />
-      <Tab.Screen name="Favorite" component={BookmarkStackNavigator} />
-      <Tab.Screen name="Profile" component={ProfileStackNavigator} />
+      <Tab.Screen name="Home" component={HomeStackNavigator}
+      options={{ unmountOnBlur: true }}
+      listeners={({ navigation }) => ({
+        blur: () => navigation.setParams({ screen: undefined }),
+      })} />
+      <Tab.Screen name="Meals" component={MealsStackNavigator} 
+      options={{ unmountOnBlur: true }}
+      listeners={({ navigation }) => ({
+        blur: () => navigation.setParams({ screen: undefined }),
+      })}/>
+      <Tab.Screen name="Favorite" component={BookmarkStackNavigator} 
+      options={{ unmountOnBlur: true }}
+      listeners={({ navigation }) => ({
+        blur: () => navigation.setParams({ screen: undefined }),
+      })}/>
+      <Tab.Screen name="Profile" component={ProfileStackNavigator} 
+      options={{ unmountOnBlur: true }}
+      listeners={({ navigation }) => ({
+        blur: () => navigation.setParams({ screen: undefined }),
+      })}/>
     </Tab.Navigator>
     {/* </NavigationContainer> */}
     

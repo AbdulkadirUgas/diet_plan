@@ -1,4 +1,4 @@
-import { StyleSheet, Text,Image, View, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
+import { StyleSheet,RefreshControl, Text,Image, View, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native'
 import React,{useEffect,useState} from 'react'
 import { Icon } from "@rneui/themed";
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -9,11 +9,17 @@ import Header from './Components/Header';
 const Plan = ({navigation}) => {
     const [meals,setMeals] = useState([]);
     const [activeUser,setActiveUser] = useState([]);
-    
+    const [refresh,setRefresh] = useState(false)
+    // setTimeout(function () {
+    //   loadUserData()
+    // .then(fetchData())
+    // }, 5000);
     useEffect(() => {
       loadUserData()
-      .then(fetchData())
-    },[meals])
+  },[])
+    useEffect(() => {
+      fetchData()
+    },[activeUser])
     const loadUserData = async () => {
       const userData = await AsyncStorage.getItem('userInfo')
       const data = userData != null ? JSON.parse(userData) : null
@@ -39,10 +45,11 @@ const Plan = ({navigation}) => {
           return response.json()
         })
         .then(result =>{
+          // console.log(result?.result)
             setMeals(result?.result)
         })
         .catch(error =>{
-          console.log(error)
+          console.log('here:'+error)
         })
     }
 

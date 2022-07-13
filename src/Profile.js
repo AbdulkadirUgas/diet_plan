@@ -85,10 +85,13 @@ const Profile = ({navigation}) => {
       ToastAndroid.show(message,ToastAndroid.LONG):
       Alert.alert(title,message,'OK')
     }
+    
     useEffect(() => {
       loadUserData()
-      .then(fetchProfileInfo())
     },[])
+    useEffect(() => {
+      fetchProfileInfo()
+    },[activeUser])
 
     const loadUserData = async () => {
       const userData = await AsyncStorage.getItem('userInfo')
@@ -97,6 +100,7 @@ const Profile = ({navigation}) => {
     }
     const fetchProfileInfo = () => {
       var formData = new FormData();
+      console.log('data',activeUser)
       formData.append('userID', activeUser?.userID);
       let url = serverIP+'user.php?user=getUserInfo'
       fetch(url,{
@@ -114,6 +118,7 @@ const Profile = ({navigation}) => {
         return response.json()
       })
       .then(result =>{
+        console.log(result)
           setUserData(result?.result[0]);
           activateCurrentPlan(result?.result[0].catID)
           activateCurrentGender(result?.result[0].gender)

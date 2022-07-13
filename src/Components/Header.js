@@ -17,15 +17,12 @@ const Header = ({navigation,filter,action,title}) => {
             </View>
             </View>
 
-            <TouchableOpacity onPress={() => setVisibility(true)} activeOpacity={0.5} style={{marginRight:20}}>
+            {/* <TouchableOpacity onPress={() => setVisibility(true)} activeOpacity={0.5} style={{marginRight:20}}>
                 <Icon name='ellipsis-vertical' type='ionicon' color='#000' size={24}/>
-            </TouchableOpacity>
-            {
-                visible && 
-                <TouchableOpacity onPress={() => action()} style={{position:'absolute',backgroundColor:'#01882A',top:15,right:0,height:50,width:100,justifyContent:'center',alignItems:'center'}}>
+            </TouchableOpacity> */}
+                {/* <TouchableOpacity onPress={() => action()} style={{position:'absolute',backgroundColor:'#01882A',top:15,right:0,height:50,width:100,justifyContent:'center',alignItems:'center'}}>
                     <Text style={{fontSize:18,fontWeight:'600',color:'#FFF'}}>Logout</Text>
-                </TouchableOpacity>
-            }
+                </TouchableOpacity> */}
             </TouchableOpacity> 
             :
             <View style={{flexDirection: 'row',justifyContent:'space-between',alignItems:'center',marginTop:40}}>

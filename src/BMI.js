@@ -11,8 +11,10 @@ const BMI = ({navigation}) => {
   const [status,setStatus] = useState('Normal');
   useEffect(() => {
     loadUserData()
-    .then(fetchProfileInfo())
   },[])
+  useEffect(() => {
+    fetchProfileInfo()
+  },[activeUser])
 
   const loadUserData = async () => {
     const userData = await AsyncStorage.getItem('userInfo')
@@ -21,6 +23,7 @@ const BMI = ({navigation}) => {
   }
   const fetchProfileInfo = () => {
     var formData = new FormData();
+    console.log('inside',activeUser)
     formData.append('userID', activeUser?.userID);
     let url = serverIP+'user.php?user=getUserInfo'
     fetch(url,{
@@ -38,6 +41,7 @@ const BMI = ({navigation}) => {
       return response.json()
     })
     .then(result =>{
+      console.log(result?.result)
         setUserData(result?.result[0]);
         const weight = result?.result[0].weight
         let height = result?.result[0].height

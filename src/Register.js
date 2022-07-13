@@ -1,6 +1,7 @@
 import { Alert, Platform, StyleSheet, Text, TextInput, ToastAndroid, TouchableOpacity, View } from 'react-native'
 import React,{useState} from 'react'
 import { Icon } from "@rneui/themed";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import {validateRegisterDate} from '../Validate'
 import { serverIP } from '../Constants';
@@ -60,6 +61,15 @@ const Register = ({navigation}) => {
     ToastAndroid.show(message,ToastAndroid.LONG):
     Alert.alert(title,message,'OK')
   }
+  const saveUserData = async (data) =>{
+    try {
+      const userData = JSON.stringify(data)
+      await AsyncStorage.setItem('userInfo', userData)
+    } catch (e) {
+      // saving error
+      console.log("error aa jira ",e)
+    }
+  }
     const register = () => {
       const {errors,valid} = validateRegisterDate(name,age,height,weight,activeGender,email,password)
       if(!valid){
@@ -71,6 +81,7 @@ const Register = ({navigation}) => {
         formData.append('age', age);
         formData.append('height', height);
         formData.append('weight', weight);
+        console.log('selected plan '+activePlan)
         formData.append('gender', activeGender);
         formData.append('plan', activePlan);
         formData.append('password', password);
@@ -92,7 +103,8 @@ const Register = ({navigation}) => {
         .then(result =>{
           console.log(result)
           if(result?.status === 'success'){
-            navigation.replace('App')
+            saveUserData(result)
+            .then(navigation.replace('App'))
           }else displayMessage("error ",result?.status)
         })
         .catch(error =>{
