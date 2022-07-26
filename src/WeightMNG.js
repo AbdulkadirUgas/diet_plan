@@ -13,8 +13,9 @@ const WeightMNG = ({navigation}) => {
         const userData = await AsyncStorage.getItem('userInfo')
         const data = userData != null ? JSON.parse(userData) : null
         plan.forEach(plan => {
-          plan.id === '1' ? setActivePlan(plan.label) : null
+          plan.id === data?.plan ? setActivePlan(plan.label) : null
         });
+        console.log(data)
         // setActivePlan(plan[activeUser?.plan-1].label)
         setActiveUser(data)
     }
