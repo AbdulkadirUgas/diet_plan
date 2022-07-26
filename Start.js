@@ -13,6 +13,7 @@ import BMI from './src/BMI';
 import { BookmarkStackNavigator, HomeStackNavigator, ProfileStackNavigator, MealsStackNavigator } from './src/Components/CustomeStack';
 import CustomTabBar from './src/Components/CustomTabBar';
 import App from './App';
+import Forgot from './src/Forgot';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -30,6 +31,7 @@ const Start = () => {
         }}>
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="forgot" component={Forgot} />
         <Stack.Screen name="App" component={App} />
       </Stack.Navigator>
     </NavigationContainer>
