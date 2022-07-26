@@ -11,9 +11,7 @@ const Home = ({navigation}) => {
   )
   return (
     <View style={styles.container}>
-    <Header filter='Home' title='Home' action={()=>{console.log('logout')}}/>
-    
-
+    <Header filter='Home' title='Home' action={()=>{}}/>
       <View style={{backgroundColor:'#f5f5f5',flex:1,marginTop:20,paddingTop:20,borderTopRightRadius:40,borderTopLeftRadius:40,alignItems:'center'}}>
       <Text style={{fontSize:20,fontWeight:'800',color:'#01882A'}}>What's your primary goal?</Text>
 

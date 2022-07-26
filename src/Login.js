@@ -18,13 +18,13 @@ const Login = ({navigation}) => {
         const userData = JSON.stringify(data)
         await AsyncStorage.setItem('userInfo', userData)
       } catch (e) {
-        // saving error
+        /* saving error */
         console.log("error aa jira ",e)
       }
     }
 
     const tryLogin = async () => {
-      //check if username and password are empty
+      /*check if username and password are empty*/
       if(username === ''){
         displayMessage("Login","Username can not be empty")
       }

@@ -10,7 +10,7 @@ const Forgot = ({navigation}) => {
         <Header filter='back' title='Forgot passowrd' action={()=>{navigation.goBack()}}/>
         <View style={{flex:1,justifyContent:'center',paddingHorizontal:20}}>
         <View style={styles.wrap_view}>
-          <Text style={{fontSize:16,alignSelf:'center',marginTop:20}}>Enter your email to reset your password</Text>
+          <Text style={{fontSize:16,alignSelf:'center',color:'black',marginTop:20}}>Enter your email to reset your password</Text>
           <View style={[styles.input_view,{marginTop:30}]}>
             <Icon name='mail' type='ionioc' color='#000' size={20} style={{marginLeft:20}}/>
             <TextInput
