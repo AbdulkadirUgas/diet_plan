@@ -10,6 +10,7 @@ import Profile from '../Profile';
 import Favorite from '../Favorite';
 import WeightMNG from '../WeightMNG';
 import Feedback from '../Feedback';
+import Motivation from '../Motivation';
 
 
 
@@ -26,6 +27,7 @@ const HomeStackNavigator = () => {
             <Stack.Screen name="bmi" component={BMI} />
             <Stack.Screen name="wng" component={WeightMNG} />
             <Stack.Screen name="feedback" component={Feedback} />
+            <Stack.Screen name="motivate" component={Motivation} />
         </Stack.Navigator>
     )
 }

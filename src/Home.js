@@ -1,4 +1,4 @@
-import { StyleSheet, Text,Image, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text,Image, View, TouchableOpacity, ScrollView } from 'react-native'
 import React,{useEffect,useState} from 'react'
 import Header from './Components/Header'
 
@@ -12,7 +12,7 @@ const Home = ({navigation}) => {
   return (
     <View style={styles.container}>
     <Header filter='Home' title='Home' action={()=>{}}/>
-      <View style={{backgroundColor:'#f5f5f5',flex:1,marginTop:20,paddingTop:20,borderTopRightRadius:40,borderTopLeftRadius:40,alignItems:'center'}}>
+      <ScrollView style={{backgroundColor:'#f5f5f5',flex:1,marginTop:20,paddingTop:20,borderTopRightRadius:40,borderTopLeftRadius:40}}>
       <Text style={{fontSize:20,fontWeight:'800',color:'#01882A'}}>What's your primary goal?</Text>
 
       <View style={{marginTop:30,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
@@ -43,7 +43,22 @@ const Home = ({navigation}) => {
             <Text style={{marginTop:3, fontSize:20,color:'#01882A'}}>Feedback</Text>
         </TouchableOpacity>
       </View>
+      <View style={{marginTop:20,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
+        <TouchableOpacity onPress={() => {navigation.navigate('bmi')}} activeOpacity={0.5} style={styles.card}>
+            <View style={styles.card_icon}>
+            <Image source={require('./assets/exercise.png')} style={{height:60,width:60,resizeMode:'contain'}} />
+            </View>
+            <Text style={{marginTop:3, fontSize:20,color:'#01882A'}}>Exercise</Text>
+        </TouchableOpacity>
+        <TouchableOpacity navigation={navigation} onPress={() => {navigation.navigate('motivate')}} activeOpacity={0.5} style={[styles.card,{marginLeft:20}]}>
+            <View style={styles.card_icon}>
+            <Image source={require('./assets/motivation.png')} style={{height:60,width:60,resizeMode:'contain'}} />
+            </View>
+            <Text style={{marginTop:3, fontSize:20,color:'#01882A'}}>Motivation</Text>
+        </TouchableOpacity>
       </View>
+      <View style={{height:50}}></View>
+      </ScrollView>
     </View>
   )
 }

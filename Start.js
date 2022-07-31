@@ -29,9 +29,9 @@ const Start = () => {
       screenOptions={{
             header:()=>(<View style={{height:0}}></View>)
         }}>
-        <Stack.Screen name="Login" component={Login} />
+        {/* <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
-        <Stack.Screen name="forgot" component={Forgot} />
+        <Stack.Screen name="forgot" component={Forgot} /> */}
         <Stack.Screen name="App" component={App} />
       </Stack.Navigator>
     </NavigationContainer>
