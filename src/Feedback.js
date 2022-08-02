@@ -45,6 +45,7 @@ const Feedback = ({navigation}) => {
       
       <View style={{backgroundColor:'#FFF',marginTop:20,marginLeft:20,marginRight:20,padding:30,borderRadius:20}}>
         <Text style={{fontSize:20,fontWeight:'700',color:'#01882A'}}>Name: {activeUser?.name && activeUser?.name}</Text>
+        <Text style={{fontSize:20,fontWeight:'700',color:'#01882A'}}>Doctor: Mofit</Text>
         <View style={{marginTop:10,borderWidth:1,padding:5,borderColor:'#01882A',borderRadius:10,height:160}}>
         <TextInput
               style={styles.inputField}

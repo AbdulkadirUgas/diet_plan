@@ -169,6 +169,36 @@ const Profile = ({navigation}) => {
         })
       }
     }
+
+    const deActivate = () =>{
+      var formData = new FormData();
+        formData.append('userID', activeUser?.userID);
+        let url = serverIP+'user.php?user=deActiveUser'
+        fetch(url,{
+          method: 'post',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'multipart/form-data'
+          },
+          body: formData
+        })
+        .then(response => {
+          if(!response.ok){
+            throw new Error('could not fetch data')
+          }
+          return response.json()
+        })
+        .then(result =>{
+          console.log(result)
+          if(result?.status === 'updated'){
+            navigation.replace('Login')
+          }else displayMessage("error ",result?.status)
+        })
+        .catch(error =>{
+          console.log(error)
+        })
+      
+    }
     const logout = () => {
       console.log('logout')
     }
@@ -299,6 +329,13 @@ const Profile = ({navigation}) => {
           activeOpacity={0.5}
           style={[styles.loginStyle,{backgroundColor:'#E23C3C',marginTop:20}]}>
           <Text style={styles.loginText}>Logout</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => {deActivate()}}
+          activeOpacity={0.5}
+          style={[styles.loginStyle,{backgroundColor:'#D1D1D1',marginTop:20}]}>
+          <Text style={styles.loginText}>De-Activate</Text>
         </TouchableOpacity>
 
     </View>
