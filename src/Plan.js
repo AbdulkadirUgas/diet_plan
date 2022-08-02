@@ -120,9 +120,9 @@ const Plan = ({navigation}) => {
 const FoodCard = ({meal,updateFav}) => (
     <View style={styles.food_card}>
         <Image source={{uri:serverIP+'/images/'+meal.image}} style={{height:100,width:100,resizeMode:'contain'}} />
-        <View style={{}}>
+        <View style={{flex:0.9}}>
             <Text style={{fontSize:20,fontWeight:'600',color:'#01882A'}}>{meal.type}</Text>
-            <Text style={{fontSize:14,marginTop:4,color:'#004'}}>{meal.name}</Text>
+            <Text style={{fontSize:14,marginTop:4,color:'#004',flexWrap:'wrap'}}>{meal.name}</Text>
         </View>
         <TouchableOpacity onPress={()=>{updateFav()}} activeOpacity={0.5} style={[styles.bookmark_icon,meal?.isFav ? {backgroundColor:'#FEC111'}:{borderColor:'#FEC111',borderWidth:1}]}>
         <Icon name={meal?.isFav ? 'heart' : 'heart-outline'} type='ionicon' color={meal?.isFav ? '#fff' : '#FEC111'} size={20}/>
@@ -137,6 +137,7 @@ const styles = StyleSheet.create({
         backgroundColor:'#FFF'
     },
     food_card:{
+        flex:1,
         flexDirection:'row',
         backgroundColor:'white',
         marginLeft:30,

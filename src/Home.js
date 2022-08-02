@@ -44,7 +44,7 @@ const Home = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={{marginTop:20,flexDirection:'row',justifyContent:'center',alignItems:'center'}}>
-        <TouchableOpacity onPress={() => {navigation.navigate('bmi')}} activeOpacity={0.5} style={styles.card}>
+        <TouchableOpacity onPress={() => {navigation.navigate('exercise')}} activeOpacity={0.5} style={styles.card}>
             <View style={styles.card_icon}>
             <Image source={require('./assets/exercise.png')} style={{height:60,width:60,resizeMode:'contain'}} />
             </View>
