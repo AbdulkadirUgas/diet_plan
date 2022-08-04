@@ -10,15 +10,32 @@ const Exercise = ({navigation}) => {
     const [meals,setMeals] = useState([]);
     const [activeUser,setActiveUser] = useState([]);
     const [refresh,setRefresh] = useState(false)
+    const [activePlan,setActivePlan] = useState('')
+
+    const plan = [
+      {
+        id:'1',
+        label: 'Weight Gain',
+        isSelected: false
+      },
+      {
+        id:'2',
+        label: 'Weight Loss',
+        isSelected: false
+      }
+    ]
     useEffect(() => {
       loadUserData()
-  },[])
+    },[])
     useEffect(() => {
       fetchData()
     },[activeUser])
     const loadUserData = async () => {
       const userData = await AsyncStorage.getItem('userInfo')
       const data = userData != null ? JSON.parse(userData) : null
+      plan.forEach(plan => {
+        plan.id === data?.plan ? setActivePlan(plan.label) : null
+      });
       setActiveUser(data)
     }
 
@@ -50,17 +67,14 @@ const Exercise = ({navigation}) => {
     }
   return (
     <View style={styles.container}>
-    <Header filter='back' title='Exercise' action={()=>{navigation.goBack()}}/>
-     
-
+    <Header filter='back' title={'Exercise for '+activePlan} action={()=>{navigation.goBack()}}/>
       <View style={{backgroundColor:'#f5f5f5',flex:1,marginTop:20,paddingTop:30,borderTopRightRadius:40,borderTopLeftRadius:40,}}>
-      
       {
         meals.length > 0 ?
         <ScrollView>
           {
             meals.map((meal,index) => (
-              <ExerciseCard exr={meal} key={meal.mealID}/>
+              <ExerciseCard exr={meal} key={index}/>
             ))
           }
         </ScrollView>
