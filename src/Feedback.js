@@ -15,6 +15,7 @@ const Feedback = ({navigation}) => {
     const loadUserData = async () => {
         const userData = await AsyncStorage.getItem('userInfo')
         const data = userData != null ? JSON.parse(userData) : null
+        console.log(data)
         setActiveUser(data)
     }
     const displayMessage = (title,message) => {
@@ -28,21 +29,48 @@ const Feedback = ({navigation}) => {
           visible={succes}>
           <ShowSuccess navigation={navigation}/>
       </Modal>
-  )
+    )
+
+    const sendFeedback = () =>{
+      // message === '' ? displayMessage('Error','Please enter a feedback') : setSuccess(true)
+      if(message === '') displayMessage('Error','Please enter a feedback')
+      else{
+          var formData = new FormData();
+          formData.append('userID', activeUser?.userID);
+          formData.append('comment', message);
+          let url = serverIP+'user.php?user=sendFeedback'
+          fetch(url,{
+            method: 'post',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'multipart/form-data'
+            },
+            body: formData
+          })
+          .then(response => {
+            if(!response.ok){
+              throw new Error('could not fetch data')
+            }
+            return response.json()
+          })
+          .then(result =>{
+            console.log(result)
+            if(result?.status === 'success'){
+              setSuccess(true)
+            }else displayMessage("error ",result?.status)
+          })
+          .catch(error =>{
+            console.log(error)
+          })
+        }
+    }
 
   return (
     <View style={styles.container}>
     {renderModal()}
     <Header filter='back' title='Feedback' action={()=>{navigation.goBack()}}/>
-      {/* <View style={{flexDirection: 'row',justifyContent:'center',alignItems:'center',marginTop:40}}>
-        <Image source={require('./assets/logo.png')} style={{height:100,width:100,resizeMode:'contain'}} />
-        <View style={{marginLeft:10,justifyContent:'center',alignItems:'center'}}>
-            <Text style={{fontSize:50,fontWeight:'900',color:'#01882A'}}>Weight</Text>
-            <Text style={{fontSize:30,fontWeight:'200',color:'#FEC111'}}>management</Text>
-        </View>
-      </View> */}
       <View style={{backgroundColor:'#f5f5f5',flex:1,marginTop:20,paddingTop:30,borderTopRightRadius:40,borderTopLeftRadius:40,}}>
-      
+
       <View style={{backgroundColor:'#FFF',marginTop:20,marginLeft:20,marginRight:20,padding:30,borderRadius:20}}>
         <Text style={{fontSize:20,fontWeight:'700',color:'#01882A'}}>Name: {activeUser?.name && activeUser?.name}</Text>
         <Text style={{fontSize:20,fontWeight:'700',color:'#01882A'}}>Doctor: Mofit</Text>
@@ -60,9 +88,7 @@ const Feedback = ({navigation}) => {
             />
         </View>
         <TouchableOpacity
-          onPress={() => {
-            message === '' ? displayMessage('Error','Please enter a feedback') : setSuccess(true)
-          }}
+          onPress={() => {sendFeedback()}}
           activeOpacity={0.5}
           style={styles.loginStyle}>
           <Text style={styles.loginText}>Send</Text>
@@ -81,7 +107,7 @@ const ShowSuccess = ({navigation}) =>{
     <View style={{flex:1,backgroundColor:'black',justifyContent:'center',alignItems:'center',opacity:0.9}}>
     <View style={{backgroundColor:'#FFF',padding:20,borderRadius:10}}>
     <Text style={{fontSize:20,color:'#01882A'}}>Thanks for your feedback</Text>
-    <Text style={{marginTop:10}}>You will get our response as soon as possible</Text>
+    <Text style={{marginTop:10,color:'black'}}>You will get our response as soon as possible</Text>
     <TouchableOpacity onPress={()=>navigation.goBack()} style={{marginTop:20, backgroundColor:'#01882A',width:40,height:40,alignSelf:'center',justifyContent:'center',alignItems:'center',borderRadius:50}}>
     <Icon
         name='close'
