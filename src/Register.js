@@ -67,7 +67,7 @@ const Register = ({navigation}) => {
       await AsyncStorage.setItem('userInfo', userData)
     } catch (e) {
       // saving error
-      console.log("error aa jira ",e)
+      console.log("error baa jira ",e)
     }
   }
     const register = () => {

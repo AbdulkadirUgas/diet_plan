@@ -19,10 +19,7 @@ const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
 const Start = () => {
-
-
   return (
-    
     <SafeAreaProvider style={{flex:1,backgroundColor:'#eee'}}>
     <NavigationContainer>
       <Stack.Navigator
