@@ -12,14 +12,14 @@ const WeightMNG = ({navigation}) => {
     const loadUserData = async () => {
         const userData = await AsyncStorage.getItem('userInfo')
         const data = userData != null ? JSON.parse(userData) : null
-        plan.forEach(plan => {
-          plan.id === data?.plan ? setActivePlan(plan.label) : null
+        planArray.forEach(array => {
+          array.id === data?.plan ? setActivePlan(array.label) : null
         });
         console.log(data)
         // setActivePlan(plan[activeUser?.plan-1].label)
         setActiveUser(data)
     }
-    const plan = [
+    const planArray = [
       {
         id:'1',
         label: 'Weight Gain',

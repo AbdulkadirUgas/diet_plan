@@ -16,13 +16,6 @@ const Header = ({navigation,filter,action,title}) => {
                 <Text style={{fontSize:30,fontWeight:'200',color:'#FEC111'}}>plan</Text>
             </View>
             </View>
-
-            {/* <TouchableOpacity onPress={() => setVisibility(true)} activeOpacity={0.5} style={{marginRight:20}}>
-                <Icon name='ellipsis-vertical' type='ionicon' color='#000' size={24}/>
-            </TouchableOpacity> */}
-                {/* <TouchableOpacity onPress={() => action()} style={{position:'absolute',backgroundColor:'#01882A',top:15,right:0,height:50,width:100,justifyContent:'center',alignItems:'center'}}>
-                    <Text style={{fontSize:18,fontWeight:'600',color:'#FFF'}}>Logout</Text>
-                </TouchableOpacity> */}
             </TouchableOpacity> 
             :
             <View style={{flexDirection: 'row',justifyContent:'space-between',alignItems:'center',marginTop:40}}>

@@ -3,7 +3,7 @@ import React,{useEffect,useState} from 'react'
 import { Icon } from "@rneui/themed";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {validateRegisterDate} from '../Validate'
+import {validateRegisterData} from '../Validate'
 import { serverIP } from '../Constants';
 
 const Profile = ({navigation}) => {
@@ -131,7 +131,7 @@ const Profile = ({navigation}) => {
       }
     }
     const update = () => {
-      const {errors,valid} = validateRegisterDate(userData.name,userData.age,userData.height,userData.weight,userData.activeGender,userData.email,'da')
+      const {errors,valid} = validateRegisterData(userData.name,userData.age,userData.height,userData.weight,userData.activeGender,userData.email,'da')
       if(!valid){
         displayMessage("Error",errors.error)
       }else{
@@ -161,7 +161,7 @@ const Profile = ({navigation}) => {
         .then(result =>{
           console.log(result)
           if(result?.status === 'updated'){
-            displayMessage('Updated','Profile update succesfully')
+            displayMessage('Updated','Profile updated succesfully')
           }else displayMessage("error ",result?.status)
         })
         .catch(error =>{

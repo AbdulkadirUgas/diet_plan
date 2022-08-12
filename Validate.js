@@ -1,4 +1,4 @@
-module.exports.validateRegisterDate = (fullname,age,height,weight,gender,email,password) =>{
+module.exports.validateRegisterData = (fullname,age,height,weight,gender,email,password) =>{
     const errors = {};
     if(fullname === ''){
         errors.error = 'Full name is required'

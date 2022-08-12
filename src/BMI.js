@@ -45,10 +45,10 @@ const BMI = ({navigation}) => {
         setUserData(result?.result[0]);
         const weight = result?.result[0].weight
         let height = result?.result[0].height
-        height = height/100
+        height = height/100 /// changing height from cm to m
         setBMI(weight / (height * height))
         if(weight / (height * height) <= 18.4 ) setStatus('Underweight')
-        else if(weight / (height * height) >= 18.5 &&  weight / (height * height) <= 24.9 )setStatus('Underweight')
+        else if(weight / (height * height) >= 18.5 &&  weight / (height * height) <= 24.9 )setStatus('Normal')
         else if(weight / (height * height) >= 25 &&  weight / (height * height) <= 39.9 )setStatus('Overweight')
         else if(weight / (height * height) >= 40 )setStatus('Obese')
     })

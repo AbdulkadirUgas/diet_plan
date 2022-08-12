@@ -26,7 +26,7 @@ const App = () => {
         <View style={{height:0}}></View>
       )
     }}
-       barStyle={{ backgroundColor: 'red' }} tabBar={props => <CustomTabBar {...props} />}>
+       barStyle={{}} tabBar={props => <CustomTabBar {...props} />}>
       <Tab.Screen name="Home" component={HomeStackNavigator}
       options={{ unmountOnBlur: true }}
       listeners={({ navigation }) => ({

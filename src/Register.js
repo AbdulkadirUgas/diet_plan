@@ -3,7 +3,7 @@ import React,{useState} from 'react'
 import { Icon } from "@rneui/themed";
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import {validateRegisterDate} from '../Validate'
+import {validateRegisterData} from '../Validate'
 import { serverIP } from '../Constants';
 
 const Register = ({navigation}) => {
@@ -71,7 +71,7 @@ const Register = ({navigation}) => {
     }
   }
     const register = () => {
-      const {errors,valid} = validateRegisterDate(name,age,height,weight,activeGender,email,password)
+      const {errors,valid} = validateRegisterData(name,age,height,weight,activeGender,email,password)
       if(!valid){
         displayMessage("Error",errors.error)
       }else{
